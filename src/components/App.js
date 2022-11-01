@@ -137,13 +137,103 @@ const states = [{
 	}]
 }];
 
+var arr=[]
+var arr1=[]
+
 
 function App() 
 {
-	// Do not alter/remove main div
+	
+	const [c,setc]=useState(['Indore','Bhopal','Gwalior']);
+	const [T,setT]=useState(['Mhow','Dewas']);
+	const [sdetail,setsDetail]=useState([]);
+	const [cdetail,setcDetail]=useState([]);
+	const [Tdetail,setTDetail]=useState([]);
+	function handleStateChange(e){
+		  let val=states[e.target.value].name;
+		  
+		  states.map((state)=>{
+			 if(state.name==val){
+				setsDetail([state.name,state.description]);
+				arr= state.city.map((cit)=>{
+					 return cit.name;
+				 })
+				 setc(arr)
+			 }
+		  })
+	}
+
+	function handleCityChange(e){
+		let val=e.target.value;
+		states.map((state)=>{
+			state.city.map((city)=>{
+				
+				 if(city.name==val){
+                     setcDetail([city.name,city.description])
+					arr1=city.landmarks.map((land)=>{
+						 return land.name;
+					})
+					setT(arr1);
+				 }
+			})
+		})
+	}
+
+	function handleTown(e){
+        let val=e.target.value;
+		states.map((state)=>{
+			state.city.map((city)=>{
+				 
+                     city.landmarks.map((town)=>{
+                             if(town.name==val){
+								 setTDetail([town.name,town.description]);
+							 }  
+					 })
+					
+		
+				 
+			})
+		})
+	}
+	
 	return (
 	<div id="main">
-		
+		<select id="state" onChange={(e)=>handleStateChange(e)}>
+				 {states.map((state,index)=>{
+					return <option key={index} value={index}>{state.name}</option>	 
+				})}	
+		</select>
+
+		<div >
+		   {sdetail.map((s,ind)=>{
+			   
+			   return <p id={(ind==0)?'state-name':'state-description'}>{s}</p>
+		   })}
+		</div>
+
+		<select id="city" onChange={(e)=>handleCityChange(e)}>
+                   {c.map((ci,index)=>{
+					return <option key={index} value={ci}>{ci}</option>
+				   })}		
+		</select>
+
+		<div>
+              {cdetail.map((c,ind)=>{
+				 return <p id={(ind==0)?'city-name':'city-description'}>{c}</p>
+			  })}
+		</div>
+
+		<select id="landmark"  onChange={(e)=>handleTown(e)}>
+			{T.map((land,index)=>{
+				return <option key={index} value={land}>{land}</option>
+			})}
+		</select>
+
+		<div>
+		      {Tdetail.map((t,ind)=>{
+				 return <p id={(ind==0)?'landmark-name':'landmark-description'}>{t}</p>
+			  })}
+		</div>
 	</div>
 	);
 }
